@@ -1,0 +1,17 @@
+cflags  = -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter
+ldflags = -lreadline
+builddir = build/
+
+rule cc
+  depfile = $out.d
+  command = gcc -MD -MF $out.d $cflags -c $in -o $out
+
+rule ld
+  command = gcc $ldflags $in -o $out
+
+build build/main.o: cc src/main.c
+build build/oom.o: cc src/oom.c
+build build/hashmap.o: cc src/hashmap.c
+build build/exit.o: cc src/exit.c
+build build/die.o: cc src/die.c
+build build/ctc: ld build/main.o build/oom.o build/hashmap.o build/exit.o build/die.o
